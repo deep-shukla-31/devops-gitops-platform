@@ -1,17 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "fastapi-app.fullname" . }}
-  labels:
-    app: {{ include "fastapi-app.name" . }}
+  name: fastapi-app
+  namespace: fastapi
 spec:
-  type: ClusterIP
   selector:
-    app: {{ include "fastapi-app.name" . }}
+    app: fastapi-app
   ports:
-    - port: 80
+    - protocol: TCP
+      port: 80
       targetPort: 8000
-      protocol: TCP
-      name: http
-
-
