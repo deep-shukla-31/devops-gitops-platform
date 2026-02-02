@@ -5,19 +5,22 @@ metadata:
   namespace: argocd
 spec:
   project: default
+
   source:
     repoURL: https://github.com/deep-shukla-31/devops-gitops-platform.git
     targetRevision: main
     path: helm/fastapi-app
     helm:
-     valueFiles:
-      - values.yaml
+      valueFiles:
+        - values.yaml
+
   destination:
     server: https://kubernetes.default.svc
     namespace: fastapi
+
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
-     - CreateNamespace=true
+      - CreateNamespace=true
