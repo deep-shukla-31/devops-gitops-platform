@@ -1,7 +1,7 @@
 replicaCount: 2
 
 image:
-  repository: fastapi-app
+  repository: ghcr.io/deep-shukla-31/devops-gitops-platform/fastapi
   tag: latest
 
 service:
