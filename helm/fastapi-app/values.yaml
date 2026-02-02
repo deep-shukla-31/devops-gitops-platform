@@ -2,7 +2,7 @@ replicaCount: 2
 
 image:
   repository: ghcr.io/deep-shukla-31/devops-gitops-platform/fastapi
-  tag: 84345842bd7886f7f6c1c11795f15d1ceadf69c3
+  tag: latest
 
 service:
   type: ClusterIP
