@@ -1,21 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: fastapi-app
+  name: {{ include "fastapi-app.fullname" . }}
+  labels:
+    app: {{ include "fastapi-app.name" . }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: fastapi-app
+      app: {{ include "fastapi-app.name" . }}
   template:
     metadata:
       labels:
-        app: fastapi-app
+        app: {{ include "fastapi-app.name" . }}
     spec:
       containers:
         - name: fastapi-app
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: Always
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: 8000
           readinessProbe:
@@ -24,3 +26,10 @@ spec:
               port: 8000
             initialDelaySeconds: 5
             periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 15
+            periodSeconds: 20
+
