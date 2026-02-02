@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write
+  packages: write
+
 jobs:
   build-test:
     runs-on: ubuntu-latest
@@ -21,16 +25,23 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r app/requirements.txt
-          pip install pytest
+          pip install pytest httpx
 
       - name: Run tests
-        run: pytest app/
+        run: python -m pytest app/
 
-      - name: Build Docker image
+      - name: Login to GitHub Container Registry
         run: |
-          docker build -t fastapi-app:${{ github.sha }} -f docker/Dockerfile .
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Build and Push Docker image
+        run: |
+          IMAGE=ghcr.io/${{ github.repository }}/fastapi:${{ github.sha }}
+          docker build -t $IMAGE -f docker/Dockerfile .
+          docker push $IMAGE
 
       - name: Security scan (Trivy)
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: fastapi-app:${{ github.sha }}
+          image-ref: ghcr.io/${{ github.repository }}/fastapi:${{ github.sha }}
+
