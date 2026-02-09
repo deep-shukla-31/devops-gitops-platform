@@ -2,7 +2,7 @@ replicaCount: 2
 
 image:
   repository: ghcr.io/deep-shukla-31/devops-gitops-platform/fastapi
-  tag: 3fc345eda34aeaf0af275f8e5a8bf63b22153fd2
+  tag: 5738f2beb0616e694159866101c7518e89ba5efc
   pullPolicy: IfNotPresent
 
 service:
